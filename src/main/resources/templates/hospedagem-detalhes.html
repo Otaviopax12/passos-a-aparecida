@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${hospedagem.nome}">Detalhes da Hospedagem</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/hospedagem.css}">
+</head>
+<body>
+<div th:replace="~{fragments/_header :: header}"></div>
+
+<main class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+
+            <a th:href="@{/hospedagens}" class="btn btn-outline-secondary mb-4">
+                <i class="bi bi-arrow-left"></i> Voltar para a lista
+            </a>
+
+            <div class="card card-detalhes">
+                <img th:src="${hospedagem.urlImagem}" class="card-img-top-detalhes" th:alt="${hospedagem.nome}">
+                <div class="card-body p-4">
+                    <span class="badge bg-primary mb-3" th:text="${hospedagem.tipo}">TIPO</span>
+                    <h1 class="card-title display-5 fw-bold" th:text="${hospedagem.nome}">Nome da Hospedagem</h1>
+                    <p class="lead text-muted" th:text="${hospedagem.descricao}">
+                        Descrição completa e detalhada da hospedagem, falando sobre seus diferenciais, ambiente e o que oferece aos peregrinos.
+                    </p>
+
+                    <hr class="my-4">
+
+                    <h4 class="mb-3">Informações de Contato</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2" th:if="${hospedagem.endereco}">
+                            <i class="bi bi-geo-alt-fill me-2"></i>
+                            <span th:text="${hospedagem.endereco}">Endereço completo</span>
+                        </li>
+                        <li class="mb-2" th:if="${hospedagem.telefone}">
+                            <i class="bi bi-telephone-fill me-2"></i>
+                            <span th:text="${hospedagem.telefone}">Telefone</span>
+                        </li>
+                        <li class="mb-2" th:if="${hospedagem.emailContato}">
+                            <i class="bi bi-envelope-fill me-2"></i>
+                            <a th:href="'mailto:' + ${hospedagem.emailContato}" th:text="${hospedagem.emailContato}">Email</a>
+                        </li>
+                        <li class="mb-2" th:if="${hospedagem.instagram}">
+                            <i class="bi bi-instagram me-2"></i>
+                            <a th:href="${hospedagem.instagram}" target="_blank" th:text="${hospedagem.instagram}">Instagram</a>
+                        </li>
+                    </ul>
+
+                    <!-- =============================================== -->
+                    <!--           GALERIA DE FOTOS ADICIONADA AQUI      -->
+                    <!-- =============================================== -->
+                    <div th:if="${not #lists.isEmpty(hospedagem.galeria)}">
+                        <hr class="my-4">
+                        <h4 class="mb-3">Galeria de Fotos</h4>
+                        <div class="row row-cols-2 row-cols-md-3 g-3">
+                            <div th:each="imagem : ${hospedagem.galeria}" class="col">
+                                <img th:src="${imagem.url}" class="img-fluid rounded" alt="Foto da galeria">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

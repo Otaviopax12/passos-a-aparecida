@@ -1,0 +1,24 @@
+/* Estilo para o cabeçalho da página de destinos */
+.destinos-header {
+    background: linear-gradient(to right, #0052D4, #4364F7, #6FB1FC);
+}
+
+/* Efeito de transição suave para os cards */
+.destino-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+}
+
+.destino-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.destino-card-destaque {
+    border: none;
+}
+
+/* Garante que a imagem no card de destaque cubra todo o espaço vertical */
+.destino-card-destaque .img-fluid {
+    object-fit: cover;
+}

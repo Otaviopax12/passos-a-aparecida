@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+<body>
+
+<header th:fragment="header" class="header-fixo">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+
+            <div class="d-flex align-items-center">
+                <div class="dropdown" sec:authorize="isAuthenticated()">
+                    <button class="btn btn-profile rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Editar Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="dropdown-item text-danger">Sair</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+
+                <div sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}" class="btn btn-profile rounded-circle">
+                        <i class="bi bi-person-fill"></i>
+                    </a>
+                </div>
+
+                <a class="navbar-brand ms-3" th:href="@{/home}">Jornadas Sagradas</a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item" sec:authorize="hasRole('GUIA')">
+                        <a class="nav-link" th:href="@{/roteiros/meus-roteiros}">Meus Roteiros</a>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="hasRole('TURISTA')">
+                        <a class="nav-link" th:href="@{/roteiros/disponiveis}">Ver Roteiros</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/destinos}">Destinos & História</a>
+                    </li>
+
+                    <!-- =============================================== -->
+                    <!--          LINK DE HOSPEDAGEM ATUALIZADO          -->
+                    <!-- =============================================== -->
+
+                    <!-- Link para a página pública de hospedagens (para Turistas) -->
+                    <li class="nav-item" sec:authorize="hasRole('TURISTA')">
+                        <a class="nav-link" th:href="@{/hospedagens}">Hospedagem</a>
+                    </li>
+
+                    <!-- Link para a área de gestão de hospedagem (apenas para Gerentes) -->
+                    <li class="nav-item" sec:authorize="hasRole('GERENTE_HOSPEDAGEM')">
+                        <a class="nav-link" th:href="@{/hospedagens/minha-hospedaria}">Minha Hospedaria</a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+</header>
+
+</body>
+</html>
+

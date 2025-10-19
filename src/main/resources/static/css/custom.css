@@ -1,0 +1,41 @@
+/* Estilos para o novo Header Fixo */
+body {
+    /* Adiciona um padding no topo do body igual à altura do header para o conteúdo não ficar escondido atrás dele */
+    padding-top: 70px;
+}
+
+header.header-fixo {
+    position: fixed; /* Fixa o header no topo */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030; /* Garante que o header fique acima de outros conteúdos */
+    background-color: rgba(255, 255, 255, 0.85); /* Fundo branco semi-transparente */
+    backdrop-filter: blur(10px); /* Efeito de desfoque no fundo (funciona nos navegadores mais modernos) */
+    border-bottom: 1px solid #e9ecef; /* Linha de separação sutil */
+}
+
+/* Ajustes finos no header */
+header.header-fixo .navbar-brand {
+    color: var(--cor-principal-azul);
+    font-weight: bold;
+}
+
+header.header-fixo .nav-link {
+    font-weight: 500;
+    color: #343a40;
+}
+header.header-fixo .nav-link:hover {
+    color: var(--cor-principal-azul);
+}
+
+/* Estilo para o botão de perfil no header */
+header.header-fixo .btn-profile {
+    border: none;
+    background-color: rgba(0, 33, 71, 0.08); /* Azul principal com 8% de opacidade */
+    color: var(--cor-principal-azul);
+}
+
+header.header-fixo .btn-profile:hover {
+    background-color: rgba(0, 33, 71, 0.15); /* Azul principal com 15% de opacidade */
+}

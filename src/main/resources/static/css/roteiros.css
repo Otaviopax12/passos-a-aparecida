@@ -1,0 +1,30 @@
+/* Estilo para as páginas de roteiros */
+.roteiro-card {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+    background-color: white;
+}
+
+.roteiro-card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.roteiro-card .badge {
+    font-size: 0.75rem;
+}
+
+.info-item {
+    color: #6c757d; /* Cinza suave */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espaço entre o ícone e o texto */
+}
+
+/* Estilos para a página de detalhes */
+.etapa-card {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    background-color: #f8f9fa; /* Fundo levemente cinza */
+}

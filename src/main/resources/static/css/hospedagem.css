@@ -1,0 +1,51 @@
+/* Estilo geral */
+.bg-gradient-subtle {
+    background-color: #f8f9fa;
+}
+
+.page-header h1, .page-header .lead {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Estilo para os cards na lista */
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-img-container {
+    overflow: hidden;
+}
+
+.card-img-top {
+    transition: transform 0.3s ease;
+}
+
+.card-hover:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+
+/* Estilo para a página de detalhes */
+.btn-voltar {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #6c757d;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.btn-voltar:hover {
+    color: #0d6efd;
+}
