@@ -16,18 +16,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // --- INÍCIO DAS ADIÇÕES ---
-    // Injeta o nosso serviço de detalhes do usuário que criamos
+
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    // Bean para criptografar as senhas
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Bean que informa ao Spring Security para usar nosso serviço e nosso encoder de senha
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -35,29 +34,26 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-    // --- FIM DAS ADIÇÕES ---
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // .csrf(csrf -> csrf.disable()) // Reative o CSRF se desejar (removendo ou comentando esta linha)
+
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(authorize -> authorize
-                        // Regras públicas
+
                         .requestMatchers("/", "/home", "/login", "/pessoas/cadastrar", "/error", "/destinos").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/roteiros/{id}").permitAll()
+                        .requestMatchers("/hospedagens", "/hospedagens/{id}").permitAll() // Lista e detalhes públicos
 
-                        // --- NOVAS REGRAS DE HOSPEDAGEM ADICIONADAS ---
-                        .requestMatchers("/hospedagens", "/hospedagens/{id}").permitAll()
-                        .requestMatchers("/hospedagens/minha-hospedaria").hasRole("GERENTE_HOSPEDAGEM")
-                        // --- FIM DAS NOVAS REGRAS ---
 
-                        // Regras de perfis
                         .requestMatchers("/roteiros/disponiveis").hasRole("TURISTA")
                         .requestMatchers("/roteiros/meus-roteiros", "/roteiros/novo", "/roteiros/{id}/editar").hasRole("GUIA")
 
-                        // Qualquer outra requisição que não foi mencionada acima precisa de autenticação
+                        .requestMatchers("/hospedagens/minha-hospedaria", "/hospedagens/cadastrar", "/hospedagens/{id}/editar").hasRole("GERENTE_HOSPEDAGEM") // Gerente gere as suas
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

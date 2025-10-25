@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Aprovação de Hospedarias</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+<div th:replace="~{fragments/_header :: header}"></div>
+
+<main class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 fw-bold">Aprovação de Hospedarias</h1>
+    </div>
+
+    <!-- Mensagens de Feedback -->
+    <div th:if="${sucesso}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${sucesso}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${erro}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div th:if="${#lists.isEmpty(hospedagensPendentes)}" class="alert alert-info text-center">
+        Não há nenhuma hospedaria pendente de aprovação no momento.
+    </div>
+
+    <div class="table-responsive" th:if="${not #lists.isEmpty(hospedagensPendentes)}">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Gerente</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Loop para cada hospedaria pendente -->
+            <tr th:each="hospedagem : ${hospedagensPendentes}">
+                <td th:text="${hospedagem.nome}">Hotel Teste</td>
+                <td th:text="${hospedagem.tipo.displayValue}">Hotel</td>
+                <td th:text="${hospedagem.gerente.pessoa.nome}">Gerente Teste</td>
+                <td>
+                    <!-- Formulário para Aprovar -->
+                    <form th:action="@{/admin/hospedagens/{id}/aprovar(id=${hospedagem.idHospedagem})}" method="post" class="d-inline me-1">
+                        <button type="submit" class="btn btn-sm btn-success">
+                            <i class="bi bi-check-lg"></i> Aprovar
+                        </button>
+                    </form>
+                    <!-- Formulário para Reprovar -->
+                    <form th:action="@{/admin/hospedagens/{id}/reprovar(id=${hospedagem.idHospedagem})}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="bi bi-x-lg"></i> Reprovar
+                        </button>
+                    </form>
+                    <!-- Link para Ver Detalhes -->
+                    <a th:href="@{/hospedagens/{id}(id=${hospedagem.idHospedagem})}" target="_blank" class="btn btn-sm btn-outline-secondary ms-1">
+                        <i class="bi bi-eye"></i> Ver
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

@@ -21,6 +21,7 @@
                         </li>
                     </ul>
                 </div>
+                <!-- Bloco de Debug Removido -->
 
                 <div sec:authorize="!isAuthenticated()">
                     <a th:href="@{/login}" class="btn btn-profile rounded-circle">
@@ -38,30 +39,34 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
 
+                    <!-- Links para Guia -->
                     <li class="nav-item" sec:authorize="hasRole('GUIA')">
                         <a class="nav-link" th:href="@{/roteiros/meus-roteiros}">Meus Roteiros</a>
                     </li>
 
+                    <!-- Links para Turista -->
                     <li class="nav-item" sec:authorize="hasRole('TURISTA')">
                         <a class="nav-link" th:href="@{/roteiros/disponiveis}">Ver Roteiros</a>
                     </li>
 
+                    <!-- Link Público para Destinos -->
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/destinos}">Destinos & História</a>
                     </li>
 
-                    <!-- =============================================== -->
-                    <!--          LINK DE HOSPEDAGEM ATUALIZADO          -->
-                    <!-- =============================================== -->
-
-                    <!-- Link para a página pública de hospedagens (para Turistas) -->
+                    <!-- Links para Hospedagem (Dinâmicos) -->
                     <li class="nav-item" sec:authorize="hasRole('TURISTA')">
                         <a class="nav-link" th:href="@{/hospedagens}">Hospedagem</a>
                     </li>
-
-                    <!-- Link para a área de gestão de hospedagem (apenas para Gerentes) -->
                     <li class="nav-item" sec:authorize="hasRole('GERENTE_HOSPEDAGEM')">
                         <a class="nav-link" th:href="@{/hospedagens/minha-hospedaria}">Minha Hospedaria</a>
+                    </li>
+
+                    <!-- =============================================== -->
+                    <!--     NOVO LINK PARA O ADMIN ADICIONADO ABAIXO    -->
+                    <!-- =============================================== -->
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link" th:href="@{/admin/hospedagens/aprovar}">Admin</a>
                     </li>
 
                 </ul>

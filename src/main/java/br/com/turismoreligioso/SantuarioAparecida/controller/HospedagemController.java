@@ -1,6 +1,8 @@
 package br.com.turismoreligioso.SantuarioAparecida.controller;
 
+import br.com.turismoreligioso.SantuarioAparecida.dto.HospedagemDTO;
 import br.com.turismoreligioso.SantuarioAparecida.model.Hospedagem;
+import br.com.turismoreligioso.SantuarioAparecida.model.ImagemHospedagem;
 import br.com.turismoreligioso.SantuarioAparecida.model.TipoHospedagem;
 import br.com.turismoreligioso.SantuarioAparecida.service.HospedagemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/hospedagens")
@@ -46,39 +49,55 @@ public class HospedagemController {
 
     @GetMapping("/cadastrar")
     public String mostrarFormularioCadastro(Model model) {
-        model.addAttribute("hospedagem", new Hospedagem());
+
+        model.addAttribute("hospedagem", new HospedagemDTO());
         model.addAttribute("tiposHospedagem", TipoHospedagem.values());
         return "hospedagem-form";
     }
 
     @PostMapping("/cadastrar")
-    public String salvarNovaHospedagem(@ModelAttribute Hospedagem hospedagem, Authentication authentication) {
+    public String salvarNovaHospedagem(@ModelAttribute HospedagemDTO hospedagemDTO, Authentication authentication) {
         String emailGerente = authentication.getName();
-        hospedagemService.salvarHospedagem(hospedagem, emailGerente);
-        return "redirect:/hospedagens/minha-hospedaria?sucesso=true";
+
+        hospedagemService.salvarHospedagem(hospedagemDTO, emailGerente);
+        return "redirect:/hospedagens/minha-hospedaria";
     }
 
     @GetMapping("/{id}/editar")
     public String mostrarFormularioEdicao(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Optional<Hospedagem> hospedagemOpt = hospedagemService.findById(id);
-        // Validação de segurança
-        if (hospedagemOpt.isPresent() && hospedagemOpt.get().getGerente().getPessoa().getEmail().equals(authentication.getName())) {
-            model.addAttribute("hospedagem", hospedagemOpt.get());
+
+        if (hospedagemOpt.isPresent()) {
+            Hospedagem hospedagem = hospedagemOpt.get();
+
+            HospedagemDTO dto = new HospedagemDTO();
+            dto.setIdHospedagem(hospedagem.getIdHospedagem());
+            dto.setNome(hospedagem.getNome());
+            dto.setDescricao(hospedagem.getDescricao());
+            dto.setEndereco(hospedagem.getEndereco());
+            dto.setTelefone(hospedagem.getTelefone());
+            dto.setEmailContato(hospedagem.getEmailContato());
+            dto.setInstagram(hospedagem.getInstagram());
+            dto.setUrlImagem(hospedagem.getUrlImagem());
+            dto.setTipo(hospedagem.getTipo());
+
+            List<String> urls = hospedagem.getGaleria().stream()
+                    .map(ImagemHospedagem::getUrl)
+                    .collect(Collectors.toList());
+            dto.setGaleriaUrls(urls);
+
+            model.addAttribute("hospedagem", dto);
             model.addAttribute("tiposHospedagem", TipoHospedagem.values());
             return "hospedagem-form";
         }
-        return "redirect:/hospedagens/minha-hospedaria?erro=true";
+        return "redirect:/hospedagens/minha-hospedaria";
     }
 
     @PostMapping("/{id}/editar")
-    public String salvarEdicaoHospedagem(@PathVariable("id") Long id, @ModelAttribute Hospedagem hospedagem, Authentication authentication) {
+    public String processarEdicao(@PathVariable("id") Long id, @ModelAttribute HospedagemDTO hospedagemDTO, Authentication authentication) {
         String emailGerente = authentication.getName();
-        try {
-            hospedagemService.atualizarHospedagem(id, hospedagem, emailGerente);
-            return "redirect:/hospedagens/minha-hospedaria?sucessoEdit=true";
-        } catch (Exception e) {
-            return "redirect:/hospedagens/minha-hospedaria?erroEdit=true";
-        }
+        hospedagemService.atualizarHospedagem(id, hospedagemDTO, emailGerente);
+        return "redirect:/hospedagens/minha-hospedaria";
     }
 
     @PostMapping("/{id}/excluir")

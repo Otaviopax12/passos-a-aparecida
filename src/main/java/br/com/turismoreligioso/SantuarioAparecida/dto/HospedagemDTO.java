@@ -1,68 +1,23 @@
-package br.com.turismoreligioso.SantuarioAparecida.model;
+package br.com.turismoreligioso.SantuarioAparecida.dto;
 
-import jakarta.persistence.*;
+import br.com.turismoreligioso.SantuarioAparecida.model.TipoHospedagem;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "hospedagens")
-public class Hospedagem {
+public class HospedagemDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idHospedagem;
-
-    @Column(nullable = false, length = 150)
     private String nome;
-
-    @Lob
     private String descricao;
-
-    @Column(length = 255)
     private String endereco;
-
-    @Column(length = 20)
     private String telefone;
-
-    @Column(length = 100)
     private String emailContato;
-
-    @Column(length = 100)
     private String instagram;
-
-    @Column(name = "url_imagem", length = 500)
-    private String urlImagem;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 50)
+    private String urlImagem; // Imagem de Capa
     private TipoHospedagem tipo;
 
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private StatusHospedagem status;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gerente_id", nullable = false)
-    private GerenteHospedaria gerente;
-
-    @OneToMany(mappedBy = "hospedagem", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ImagemHospedagem> galeria = new ArrayList<>();
-
-
-    public Hospedagem() {
-        this.status = StatusHospedagem.PENDENTE;
-    }
-
-
-
-    public StatusHospedagem getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusHospedagem status) {
-        this.status = status;
-    }
+    private List<String> galeriaUrls = new ArrayList<>();
 
 
 
@@ -138,20 +93,11 @@ public class Hospedagem {
         this.tipo = tipo;
     }
 
-    public GerenteHospedaria getGerente() {
-        return gerente;
+    public List<String> getGaleriaUrls() {
+        return galeriaUrls;
     }
 
-    public void setGerente(GerenteHospedaria gerente) {
-        this.gerente = gerente;
-    }
-
-    public List<ImagemHospedagem> getGaleria() {
-        return galeria;
-    }
-
-    public void setGaleria(List<ImagemHospedagem> galeria) {
-        this.galeria = galeria;
+    public void setGaleriaUrls(List<String> galeriaUrls) {
+        this.galeriaUrls = galeriaUrls;
     }
 }
-

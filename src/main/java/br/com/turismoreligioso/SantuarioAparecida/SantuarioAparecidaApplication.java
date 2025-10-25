@@ -79,6 +79,13 @@ public class SantuarioAparecidaApplication {
                 gerente.setPerfil(Perfil.GERENTE_HOSPEDAGEM);
                 pessoaService.cadastrarNovaPessoa(gerente, "123456");
 
+                Pessoa admin = new Pessoa();
+                admin.setNome("Admin Padrão");
+                admin.setEmail("admin@email.com");
+                admin.setSenha("123456");
+                admin.setPerfil(Perfil.ADMIN);
+                pessoaService.cadastrarNovaPessoa(admin, "123456");
+
                 System.out.println(">>> Usuários padrão criados com sucesso!");
             }
         };
